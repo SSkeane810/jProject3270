@@ -20,38 +20,8 @@ public static String getPassword(String username){
 			Connection con = null;
 		
 			Statement stmt = null;
-		
-		try {
-			
-			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-			
-		} catch (ClassNotFoundException e1) {
-			
-			e1.printStackTrace();
-			
-		}
-	
-		String connectionUrl = "jdbc:sqlserver://localhost:1433;" + "databaseName=FlightProject;user=someone;password=someone;";
-		
-		try {
-			
-			con = DriverManager.getConnection(connectionUrl);
-			
-		} catch (SQLException e) {
-	
-			e.printStackTrace();
-			
-		}
 				
-		try {
-			
-			stmt = con.createStatement();
-			
-		} catch (SQLException e3) {
-	
-			e3.printStackTrace();
-			
-		}
+		stmt = ConnectionHandling.Connect();
 		
 	    ResultSet rs = null;
 	    
@@ -80,29 +50,16 @@ public static String getPassword(String username){
 			      
 			   }finally{
 
-			      try{
-			    	  
-			         if(stmt!=null)
-			        	 
-			            con.close();
-			         
-			      }catch(SQLException se){
-			    	  
-			      }
+			      if(stmt!=null)
+					 
+				    ConnectionHandling.CloseConnection();
 			      
-			      try{
-			    	  
-			         if(con!=null)
-			        	 
-			            con.close();
-			         
-			      }catch(SQLException se){
-			    	  
-			         se.printStackTrace();
-			         
-			      }
+			      if(con!=null)
+					 
+					 ConnectionHandling.CloseConnection();
 			      
 			   }
+		
 		return Password;
 					   
 			}

@@ -1,0 +1,70 @@
+package databaseInterface;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import com.microsoft.sqlserver.*;
+
+public class ConnectionHandling {
+	
+	static Connection con = null;
+	
+	static Statement stmt = null;
+	
+	public static Statement Connect(){
+		
+		try {
+			
+			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+			
+		} catch (ClassNotFoundException e1) {
+			
+			e1.printStackTrace();
+			
+		}
+	
+		String connectionUrl = "jdbc:sqlserver://localhost:1433;" + "databaseName=FlightProject;user=someone;password=someone;";
+		
+		try {
+			
+			con = (Connection) DriverManager.getConnection(connectionUrl);
+			
+		} catch (SQLException e) {
+	
+			e.printStackTrace();
+			
+		}
+				
+		try {
+			
+			stmt = ((java.sql.Connection) con).createStatement();
+			
+		} catch (SQLException e3) {
+	
+			e3.printStackTrace();
+			
+		}
+		
+		return stmt;
+	
+	}
+	
+	public static void CloseConnection(){
+		
+		try {
+			
+			con.close();
+			
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+			
+		}
+
+	}
+
+}

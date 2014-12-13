@@ -15,7 +15,7 @@ public static String getPassword(String username){
 		
 //public static void main(String[] args){
 	
-			String id = "abc123";
+			String id = username;
 			
 			String Password = null;
 			
@@ -61,7 +61,7 @@ public static String getPassword(String username){
 					 ConnectionHandling.CloseConnection();
 			      
 			   }
-		
+		System.out.println(Password);
 		return Password;
 					   
 			}
@@ -161,5 +161,24 @@ public static void register(String username, String password, int administrator,
 				   }
 						   
 			}
+
+	public static String getSecurityQuestion(String ID){
+		
+		
+		return SecurityQuestion;
+		
+		
+	}
+
+	public static boolean checkAdmin(String username) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public static boolean addShopFlights(String flightNumber) {
+		return false;
+		// TODO Auto-generated method stub
+		
+	}
 }
 

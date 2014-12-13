@@ -1,0 +1,11 @@
+package databaseInterface;
+
+public class TransactionData {
+
+	public static int getTransactionNumber() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+}

@@ -1,0 +1,25 @@
+package databaseInterface;
+
+public class Flights {
+
+	public static void deleteFlight() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public static int getFlightCost() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public static int getFlightTax() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public static boolean updateDepartureDateTime(String departureDateTime) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+}

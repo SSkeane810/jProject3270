@@ -12,8 +12,10 @@ import com.microsoft.sqlserver.*;
 public class UserData {
 	
 public static String getPassword(String username){
-			
-			String id = username;
+		
+//public static void main(String[] args){
+	
+			String id = "abc123";
 			
 			String Password = null;
 			
@@ -63,5 +65,101 @@ public static String getPassword(String username){
 		return Password;
 					   
 			}
+
+public static void register(String username, String password, int administrator, String firstName,
+		String lastName, String address, String city, String state,
+		int zip, String email, String SSN,
+		String securityQuestion, String securityAnswer, String ShoppingFlight1, 
+		String ShoppingFlight2, String ShoppingFlight3, String ShoppingFlight4, 
+		String ShoppingFlight5, String BookedFlight1, String BookedFlight2, 
+		String BookedFlight3, String BookedFlight4, String BookedFlight5){
 	
-		}
+	//public static void main(String[] args){
+
+				Connection con = null;
+			
+				Statement stmt = null;
+					
+				stmt = ConnectionHandling.Connect();
+				
+			    ResultSet rs = null;
+
+		    String sql = "INSERT INTO FlightProject.dbo.UserData VALUES (  "
+		            +"'" +username +"', "
+		            +"'" +password +"', "
+		            +"'" +administrator +"', "
+		            +"'" +firstName +"', "
+		            +"'" +lastName +"', "
+		            +"'" +address +"', "
+		            +"'" +city +"', "
+		            +"'" +state +"', "
+		            +"'" +zip +"', "
+		            +"'" +email +"', "
+		            +"'" +SSN +"', "
+		            +"'" +securityAnswer +"', "
+		            +"'" +ShoppingFlight1 +"', "
+		            +"'" +ShoppingFlight2 +"', "
+		            +"'" +ShoppingFlight3 +"', "
+		            +"'" +ShoppingFlight4 +"', "
+		            +"'" +ShoppingFlight5 +"', "
+		            +"'" +BookedFlight1 +"', "
+		            +"'" +BookedFlight2 +"', "
+		            +"'" +BookedFlight3 +"', "
+		            +"'" +BookedFlight4 +"', "
+		            +"'" +BookedFlight5 +"')";  
+		    
+			try {
+				
+				rs = stmt.executeQuery(sql);
+			  
+				  while(rs.next()){
+				 		username = rs.getString("username");
+						password = rs.getString("password");
+						administrator = rs.getInt("administrator");
+						firstName = rs.getString("firstName");
+						lastName = rs.getString("lastName");
+						address = rs.getString("address");
+						city = rs.getString("city");
+						state = rs.getString("state");
+						zip = rs.getInt("zip");
+						email = rs.getString("email");
+						SSN = rs.getString("SSN");
+						securityQuestion = rs.getString("securityQuestion");
+						securityAnswer = rs.getString("securityAnswer");
+						ShoppingFlight1 = rs.getString("ShoppingFlight1");
+						ShoppingFlight2 = rs.getString("ShoppingFlight2");
+						ShoppingFlight3 = rs.getString("ShoppingFlight3");
+						ShoppingFlight4 = rs.getString("ShoppingFlight4");
+						ShoppingFlight5 = rs.getString("ShoppingFlight5");
+						BookedFlight1 = rs.getString("BookedFlight1");
+						BookedFlight2 = rs.getString("BookedFlight2");
+						BookedFlight3 = rs.getString("BookedFlight3");
+						BookedFlight4 = rs.getString("BookedFlight4");
+						BookedFlight5 = rs.getString("BookedFlight5");
+				      }
+				  
+				      rs.close();
+				      
+				   }catch(SQLException se){
+					   
+				      se.printStackTrace();
+				      
+				   }catch(Exception e){
+				     
+				      e.printStackTrace();
+				      
+				   }finally{
+
+				      if(stmt!=null)
+						 
+					    ConnectionHandling.CloseConnection();
+				      
+				      if(con!=null)
+						 
+						 ConnectionHandling.CloseConnection();
+				      
+				   }
+						   
+			}
+}
+

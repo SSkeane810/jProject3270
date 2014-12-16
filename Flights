@@ -1,25 +1,1139 @@
 package databaseInterface;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Time;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Currency;
+import java.util.Date;
+import java.util.List;
+
+import com.microsoft.sqlserver.*;
+
 public class Flights {
 
-	public static void deleteFlight() {
-		// TODO Auto-generated method stub
+	public static int getFlightCost(String flightNumber) {
 		
+		Connection con = null;
+		
+		Statement stmt = null;
+		
+		int cost = 0;
+			
+		stmt = ConnectionHandling.Connect();
+		
+	    ResultSet rs = null;
+
+    String sql = "SELECT Cost FROM FlightProject.dbo.Flights WHERE FlightNumber = '" + flightNumber + "'"; 
+    
+	try {
+		
+			rs = stmt.executeQuery(sql);
+			
+			 while(rs.next()){
+				 
+				  cost  = rs.getInt("Cost");
+				  
+			 }
+		  
+		    rs.close();
+		      
+		   }catch(SQLException se){
+			   
+		      se.printStackTrace();
+		      
+		   }catch(Exception e){
+		     
+		      e.printStackTrace();
+		      
+		   }finally{
+
+		      if(stmt!=null)
+				 
+			    ConnectionHandling.CloseConnection();
+		      
+		      if(con!=null)
+				 
+				 ConnectionHandling.CloseConnection();
+		      
+		   }
+	
+	return cost;
+				   
+	}
+	
+	public static int getFlightTax(String flightNumber) {
+
+		Connection con = null;
+		
+		Statement stmt = null;
+		
+		int applicableTaxationPercent = 0;
+			
+		stmt = ConnectionHandling.Connect();
+		
+	    ResultSet rs = null;
+
+    String sql = "SELECT ApplicableTaxationPercent FROM FlightProject.dbo.Flights WHERE FlightNumber = '" + flightNumber + "'"; 
+    
+	try {
+		
+			rs = stmt.executeQuery(sql);
+			
+			 while(rs.next()){
+				 
+				 applicableTaxationPercent  = rs.getInt("ApplicableTaxationPercent");
+				  
+			 }
+		  
+		    rs.close();
+		      
+		   }catch(SQLException se){
+			   
+		      se.printStackTrace();
+		      
+		   }catch(Exception e){
+		     
+		      e.printStackTrace();
+		      
+		   }finally{
+
+		      if(stmt!=null)
+				 
+			    ConnectionHandling.CloseConnection();
+		      
+		      if(con!=null)
+				 
+				 ConnectionHandling.CloseConnection();
+		      
+		   }
+	
+	return applicableTaxationPercent;
+
 	}
 
-	public static int getFlightCost() {
-		// TODO Auto-generated method stub
-		return 0;
+	public static boolean addFlight(String flightNumber,
+			String departureDateTime, String arrivalDateTime,
+			String layoverAirport, String layoverDuration,
+			String departureAirport, String departureCity,
+			String departureState, String departureCountry,
+			String destinationCode, String destinationAirport,
+			String destinationCity, String destinationState,
+			String destinationCountry, String applicableTaxationPercent,
+			String capacity, String planeType,
+			String booked, String cost) {
+		
+		Connection con = null;
+		
+		Statement stmt = null;
+			
+		stmt = ConnectionHandling.Connect();
+		
+	    ResultSet rs = null;
+
+    String sql = "INSERT INTO FlightProject.dbo.Flights VALUES (  "
+            +"'" +flightNumber +"', "
+            +"'" +departureDateTime +"', "
+            +"'" +arrivalDateTime +"', "
+            +"'" +layoverAirport +"', "
+            +"'" +layoverDuration +"', "
+            +"'" +departureAirport +"', "
+            +"'" +departureCity +"', "
+            +"'" +departureState +"', "
+            +"'" +departureCountry +"', "
+            +"'" +destinationCode +"', "
+            +"'" +destinationAirport +"', "
+            +"'" +destinationCity +"', "
+            +"'" +destinationState +"', "
+            +"'" +destinationCountry +"', "
+            +"'" +applicableTaxationPercent +"', "
+            +"'" +capacity +"', "
+            +"'" +planeType +"', "
+            +"'" +booked +"', "
+            +"'" +cost +"')";  
+    
+	try {
+		
+		rs = stmt.executeQuery(sql);
+	  
+		  while(rs.next()){
+			  flightNumber  = rs.getString("FlightNumber");
+			  departureDateTime  = rs.getString("DepartureDateTime");
+			  arrivalDateTime  = rs.getString("ArrivalDateTime");
+			  layoverAirport  = rs.getString("LayoverAirport");
+			  layoverDuration  = rs.getString("LayoverDuration");
+			  departureAirport  = rs.getString("DepartureAirport");
+			  departureCity  = rs.getString("DepartureCity");
+			  departureState  = rs.getString("DepartureState");
+			  departureCountry  = rs.getString("DepartureCountry");
+			  destinationCode = rs.getString("DestinationCode");
+			  destinationAirport  = rs.getString("DestinationAirport");
+			  destinationCity  = rs.getString("DestinationCity");
+			  destinationState  = rs.getString("DestinationState");
+			  destinationCountry  = rs.getString("DestinationCountry");
+			  applicableTaxationPercent  = rs.getString("ApplicableTaxationPercent");
+			  capacity  = rs.getString("Capacity");
+			  planeType  = rs.getString("PlaneType");
+			  booked  = rs.getString("Booked");
+			  cost  = rs.getString("Cost");
+		      }
+		  
+		      rs.close();
+		      
+		      return true;
+		      
+		   }catch(SQLException se){
+			   
+		      se.printStackTrace();
+		      
+		   }catch(Exception e){
+		     
+		      e.printStackTrace();
+		      
+		   }finally{
+
+		      if(stmt!=null)
+				 
+			    ConnectionHandling.CloseConnection();
+		      
+		      if(con!=null)
+				 
+				 ConnectionHandling.CloseConnection();
+		      
+		   }
+	
+	return false;
+				   
+	}
+	public static boolean deleteFlight(String flightNumber) {
+		
+		Connection con = null;
+		
+		Statement stmt = null;
+			
+		stmt = ConnectionHandling.Connect();
+		
+	    ResultSet rs = null;
+
+    String sql = "DELETE FROM FlightProject.dbo.Flights WHERE FlightNumber = '" + flightNumber + "'"; 
+    
+	try {
+		
+			rs = stmt.executeQuery(sql);
+		  
+		    rs.close();
+		    
+		    return true;
+		      
+		   }catch(SQLException se){
+			   
+		      se.printStackTrace();
+		      
+		   }catch(Exception e){
+		     
+		      e.printStackTrace();
+		      
+		   }finally{
+
+		      if(stmt!=null)
+				 
+			    ConnectionHandling.CloseConnection();
+		      
+		      if(con!=null)
+				 
+				 ConnectionHandling.CloseConnection();
+		      
+		   }
+	
+	return false;
+				   
 	}
 
-	public static int getFlightTax() {
-		// TODO Auto-generated method stub
-		return 0;
+	public static String[][] SearchFlights(String departureCity, String destinationCity, String date, String ticketAmount, String airport) {
+
+				
+		Connection con = null;
+	
+		Statement stmt = null;
+		
+		int countRows = 0;
+		
+	stmt = ConnectionHandling.Connect();
+	
+    ResultSet rs = null;
+    ResultSet sr = null;
+    
+    String sql = "SELECT * FROM FlightProject.dbo.Flights WHERE DepartureCity = '" + departureCity + "' AND DestinationCity = '" + destinationCity + "' AND DepartureDateTime = '" + date + "' AND Cost = '" + ticketAmount + "' AND DepartureAirportCode = '" + airport + "'"; 
+		
+		try {
+			
+			sr = stmt.executeQuery(sql);
+			
+			while(sr.next()){
+				
+				countRows++;
+
+			}
+			
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+			
+		}
+		String[][] searchResults = new String[countRows][17];
+		
+	try {
+		
+		rs = stmt.executeQuery(sql);
+		
+		  while(rs.next()){
+			  for (int i = 0; i < searchResults.length - 1; i++){
+						searchResults[i][0] = rs.getString("FlightNumber");
+						searchResults[i][1] = rs.getString("DepartureDateTime");
+						searchResults[i][2] = rs.getString("ArrivalDateTime");
+						searchResults[i][3] = rs.getString("LayoverAirport");
+						searchResults[i][4] = rs.getString("LayoverDuration");
+						searchResults[i][5] = rs.getString("DepartureAirportCode");
+						searchResults[i][6] = rs.getString("DepartureCity");
+						searchResults[i][7] = rs.getString("DepartureState");
+						searchResults[i][8] = rs.getString("DestinationAirportCode");
+						searchResults[i][9] = rs.getString("DestinationCity");
+						searchResults[i][10] = rs.getString("DestinationState");
+						searchResults[i][11] = rs.getString("DestinationCountry");
+						String capacityString = Integer.toString(rs.getInt("Capacity"));
+						searchResults[i][12] = capacityString;
+						String bookedString = Integer.toString(rs.getInt("Booked"));
+						searchResults[i][13] = bookedString;
+						searchResults[i][14] = rs.getString("PlaneType");
+						searchResults[i][15] = rs.getString("Cost");
+						searchResults[i][16] = rs.getString("ApplicableTaxactionPercent");
+
+			  }
+			 		        		
+		  }
+
+ 		    rs.close();
+		    
+		 }catch(SQLException se){
+			   
+		    se.printStackTrace();
+		    
+		 }catch(Exception e){
+		   
+		    e.printStackTrace();
+		    
+		 }finally{
+		
+		    if(stmt!=null)
+				 
+			    ConnectionHandling.CloseConnection();
+		    
+		    if(con!=null)
+				 
+				 ConnectionHandling.CloseConnection();
+		    
+		 }
+	
+	return searchResults;
+
 	}
 
-	public static boolean updateDepartureDateTime(String departureDateTime) {
-		// TODO Auto-generated method stub
-		return false;
+public static boolean updateFlightNumber(String flightNumber, String newFlightNumber) {
+		
+		Connection con = null;
+		
+		Statement stmt = null;
+			
+		stmt = ConnectionHandling.Connect();
+		
+	    ResultSet rs = null;
+
+    String sql = "UPDATE FlightProject.dbo.UserData SET FlightNumber = '" + newFlightNumber + "' WHERE FlightNumber = '" + flightNumber + "'"; 
+   
+    
+	try {
+		
+			rs = stmt.executeQuery(sql);
+		  
+		    rs.close();
+		    
+		    return true;
+		      
+		   }catch(SQLException se){
+			   
+		      se.printStackTrace();
+		      
+		   }catch(Exception e){
+		     
+		      e.printStackTrace();
+		      
+		   }finally{
+
+		      if(stmt!=null)
+				 
+			    ConnectionHandling.CloseConnection();
+		      
+		      if(con!=null)
+				 
+				 ConnectionHandling.CloseConnection();
+		      
+		   }
+	
+	return false;
+
 	}
 
+public static boolean updateDepartureDateTime(String flightNumber, String newdepartureDateTime) {
+		
+		Connection con = null;
+		
+		Statement stmt = null;
+			
+		stmt = ConnectionHandling.Connect();
+		
+	    ResultSet rs = null;
+
+   String sql = "UPDATE FlightProject.dbo.UserData SET DepartureDateTime = '" + newdepartureDateTime + "' WHERE FlightNumber = '" + flightNumber + "'"; 
+
+	try {
+		
+			rs = stmt.executeQuery(sql);
+		  
+		    rs.close();
+		    
+		    return true;
+		      
+		   }catch(SQLException se){
+			   
+		      se.printStackTrace();
+		      
+		   }catch(Exception e){
+		     
+		      e.printStackTrace();
+		      
+		   }finally{
+
+		      if(stmt!=null)
+				 
+			    ConnectionHandling.CloseConnection();
+		      
+		      if(con!=null)
+				 
+				 ConnectionHandling.CloseConnection();
+		      
+		   }
+	
+	return false;
+	
+	}
+
+public static boolean updateArrivalDateTime(String flightNumber, String newArrivalDateTime) {
+		
+		Connection con = null;
+		
+		Statement stmt = null;
+			
+		stmt = ConnectionHandling.Connect();
+		
+	    ResultSet rs = null;
+
+    String sql = "UPDATE FlightProject.dbo.UserData SET ArrivalDateTime = '" + newArrivalDateTime + "' WHERE FlightNumber = '" + flightNumber + "'"; 
+ 
+	try {
+		
+			rs = stmt.executeQuery(sql);
+		  
+		    rs.close();
+		    
+		    return true;
+		      
+		   }catch(SQLException se){
+			   
+		      se.printStackTrace();
+		      
+		   }catch(Exception e){
+		     
+		      e.printStackTrace();
+		      
+		   }finally{
+
+		      if(stmt!=null)
+				 
+			    ConnectionHandling.CloseConnection();
+		      
+		      if(con!=null)
+				 
+				 ConnectionHandling.CloseConnection();
+		      
+		   }
+	
+	return false;
+	
+	}
+
+public static boolean updateLayoverAirport(String flightNumber, String newLayoverAirport) {
+	
+		Connection con = null;
+		
+		Statement stmt = null;
+			
+		stmt = ConnectionHandling.Connect();
+		
+	    ResultSet rs = null;
+	
+	String sql = "UPDATE FlightProject.dbo.UserData SET LayoverAirport = '" + newLayoverAirport + "' WHERE FlightNumber = '" + flightNumber + "'"; 
+	
+		try {
+		
+			rs = stmt.executeQuery(sql);
+		  
+		    rs.close();
+		    
+		    return true;
+		      
+		   }catch(SQLException se){
+			   
+		      se.printStackTrace();
+		      
+		   }catch(Exception e){
+		     
+		      e.printStackTrace();
+		      
+		   }finally{
+	
+		      if(stmt!=null)
+				 
+			    ConnectionHandling.CloseConnection();
+		      
+		      if(con!=null)
+				 
+				 ConnectionHandling.CloseConnection();
+		      
+		   }
+	
+	return false;
+	
+	}
+
+public static boolean updateLayoverDuration(String flightNumber, String newLayoverDuration) {
+
+		Connection con = null;
+		
+		Statement stmt = null;
+			
+		stmt = ConnectionHandling.Connect();
+		
+	    ResultSet rs = null;
+	
+	String sql = "UPDATE FlightProject.dbo.UserData SET LayoverDuration = '" + newLayoverDuration + "' WHERE FlightNumber = '" + flightNumber + "'"; 
+	
+	try {
+		
+			rs = stmt.executeQuery(sql);
+		  
+		    rs.close();
+		    
+		    return true;
+		      
+		   }catch(SQLException se){
+			   
+		      se.printStackTrace();
+		      
+		   }catch(Exception e){
+		     
+		      e.printStackTrace();
+		      
+		   }finally{
+	
+		      if(stmt!=null)
+				 
+			    ConnectionHandling.CloseConnection();
+		      
+		      if(con!=null)
+				 
+				 ConnectionHandling.CloseConnection();
+		      
+		   }
+	
+	return false;
+	
+	}
+
+public static boolean updateDepartureAirport(String flightNumber, String newDepartureAirport) {
+
+		Connection con = null;
+		
+		Statement stmt = null;
+			
+		stmt = ConnectionHandling.Connect();
+		
+	    ResultSet rs = null;
+	
+	String sql = "UPDATE FlightProject.dbo.UserData SET DepartureAirport = '" + newDepartureAirport + "' WHERE FlightNumber = '" + flightNumber + "'"; 
+
+	try {
+		
+			rs = stmt.executeQuery(sql);
+		  
+		    rs.close();
+		    
+		    return true;
+		      
+		   }catch(SQLException se){
+			   
+		      se.printStackTrace();
+		      
+		   }catch(Exception e){
+		     
+		      e.printStackTrace();
+		      
+		   }finally{
+	
+		      if(stmt!=null)
+				 
+			    ConnectionHandling.CloseConnection();
+		      
+		      if(con!=null)
+				 
+				 ConnectionHandling.CloseConnection();
+		      
+		   }
+	
+	return false;
+	
+	}
+
+public static boolean updateDepartureCity(String flightNumber, String newDepartureCity) {
+
+		Connection con = null;
+		
+		Statement stmt = null;
+			
+		stmt = ConnectionHandling.Connect();
+		
+	    ResultSet rs = null;
+	
+	String sql = "UPDATE FlightProject.dbo.UserData SET DepartureCity = '" + newDepartureCity + "' WHERE FlightNumber = '" + flightNumber + "'"; 
+	
+	try {
+		
+			rs = stmt.executeQuery(sql);
+		  
+		    rs.close();
+		    
+		    return true;
+		      
+		   }catch(SQLException se){
+			   
+		      se.printStackTrace();
+		      
+		   }catch(Exception e){
+		     
+		      e.printStackTrace();
+		      
+		   }finally{
+	
+		      if(stmt!=null)
+				 
+			    ConnectionHandling.CloseConnection();
+		      
+		      if(con!=null)
+				 
+				 ConnectionHandling.CloseConnection();
+		      
+		   }
+	
+	return false;
+	
+	}
+
+public static boolean updateDepartureState(String flightNumber, String newDepartureState) {
+
+		Connection con = null;
+		
+		Statement stmt = null;
+			
+		stmt = ConnectionHandling.Connect();
+		
+	    ResultSet rs = null;
+	
+	String sql = "UPDATE FlightProject.dbo.UserData SET DepartureState = '" + newDepartureState + "' WHERE FlightNumber = '" + flightNumber + "'"; 
+	
+	try {
+		
+			rs = stmt.executeQuery(sql);
+		  
+		    rs.close();
+		    
+		    return true;
+		      
+		   }catch(SQLException se){
+			   
+		      se.printStackTrace();
+		      
+		   }catch(Exception e){
+		     
+		      e.printStackTrace();
+		      
+		   }finally{
+	
+		      if(stmt!=null)
+				 
+			    ConnectionHandling.CloseConnection();
+		      
+		      if(con!=null)
+				 
+				 ConnectionHandling.CloseConnection();
+		      
+		   }
+	
+	return false;
+	
+	}
+
+public static boolean updateDepartureCountry(String flightNumber, String newDepartureCountry) {
+
+		Connection con = null;
+		
+		Statement stmt = null;
+			
+		stmt = ConnectionHandling.Connect();
+		
+	    ResultSet rs = null;
+	
+	String sql = "UPDATE FlightProject.dbo.UserData SET DepartureCountry = '" + newDepartureCountry + "' WHERE FlightNumber = '" + flightNumber + "'"; 
+	
+	try {
+		
+			rs = stmt.executeQuery(sql);
+		  
+		    rs.close();
+		    
+		    return true;
+		      
+		   }catch(SQLException se){
+			   
+		      se.printStackTrace();
+		      
+		   }catch(Exception e){
+		     
+		      e.printStackTrace();
+		      
+		   }finally{
+	
+		      if(stmt!=null)
+				 
+			    ConnectionHandling.CloseConnection();
+		      
+		      if(con!=null)
+				 
+				 ConnectionHandling.CloseConnection();
+		      
+		   }
+	
+	return false;
+	
+	}
+
+public static boolean updateDestinationCode(String flightNumber, String newDestinationCode) {
+	
+		Connection con = null;
+		
+		Statement stmt = null;
+			
+		stmt = ConnectionHandling.Connect();
+		
+	    ResultSet rs = null;
+	
+	String sql = "UPDATE FlightProject.dbo.UserData SET DestinationAirportCode = '" + newDestinationCode + "' WHERE FlightNumber = '" + flightNumber + "'"; 
+	
+	try {
+		
+			rs = stmt.executeQuery(sql);
+		  
+		    rs.close();
+		    
+		    return true;
+		      
+		   }catch(SQLException se){
+			   
+		      se.printStackTrace();
+		      
+		   }catch(Exception e){
+		     
+		      e.printStackTrace();
+		      
+		   }finally{
+	
+		      if(stmt!=null)
+				 
+			    ConnectionHandling.CloseConnection();
+		      
+		      if(con!=null)
+				 
+				 ConnectionHandling.CloseConnection();
+		      
+		   }
+	
+	return false;
+	
+	}
+
+public static boolean updateDestinationCity(String flightNumber, String newDestinationCity) {
+
+		Connection con = null;
+		
+		Statement stmt = null;
+			
+		stmt = ConnectionHandling.Connect();
+		
+	    ResultSet rs = null;
+	
+	String sql = "UPDATE FlightProject.dbo.UserData SET DestinationCity = '" + newDestinationCity + "' WHERE FlightNumber = '" + flightNumber + "'"; 
+	
+	try {
+		
+			rs = stmt.executeQuery(sql);
+		  
+		    rs.close();
+		    
+		    return true;
+		      
+		   }catch(SQLException se){
+			   
+		      se.printStackTrace();
+		      
+		   }catch(Exception e){
+		     
+		      e.printStackTrace();
+		      
+		   }finally{
+	
+		      if(stmt!=null)
+				 
+			    ConnectionHandling.CloseConnection();
+		      
+		      if(con!=null)
+				 
+				 ConnectionHandling.CloseConnection();
+		      
+		   }
+	
+	return false;
+	
+	}
+
+public static boolean updateDestinationState(String flightNumber, String newDestinationState) {
+
+		Connection con = null;
+		
+		Statement stmt = null;
+			
+		stmt = ConnectionHandling.Connect();
+		
+	    ResultSet rs = null;
+	
+	String sql = "UPDATE FlightProject.dbo.UserData SET DestinationState = '" + newDestinationState + "' WHERE FlightNumber = '" + flightNumber + "'"; 
+	
+	try {
+		
+			rs = stmt.executeQuery(sql);
+		  
+		    rs.close();
+		    
+		    return true;
+		      
+		   }catch(SQLException se){
+			   
+		      se.printStackTrace();
+		      
+		   }catch(Exception e){
+		     
+		      e.printStackTrace();
+		      
+		   }finally{
+	
+		      if(stmt!=null)
+				 
+			    ConnectionHandling.CloseConnection();
+		      
+		      if(con!=null)
+				 
+				 ConnectionHandling.CloseConnection();
+		      
+		   }
+	
+	return false;
+	
+	}
+
+public static boolean updateDestinationCountry(String flightNumber, String newDestinationCountry) {
+
+		Connection con = null;
+		
+		Statement stmt = null;
+			
+		stmt = ConnectionHandling.Connect();
+		
+	    ResultSet rs = null;
+	
+	String sql = "UPDATE FlightProject.dbo.UserData SET DestinationCountry = '" + newDestinationCountry + "' WHERE FlightNumber = '" + flightNumber + "'"; 
+	
+	try {
+		
+			rs = stmt.executeQuery(sql);
+		  
+		    rs.close();
+		    
+		    return true;
+		      
+		   }catch(SQLException se){
+			   
+		      se.printStackTrace();
+		      
+		   }catch(Exception e){
+		     
+		      e.printStackTrace();
+		      
+		   }finally{
+	
+		      if(stmt!=null)
+				 
+			    ConnectionHandling.CloseConnection();
+		      
+		      if(con!=null)
+				 
+				 ConnectionHandling.CloseConnection();
+		      
+		   }
+	
+	return false;
+	
+	}
+
+public static boolean updateApplicableTaxationPercent(String flightNumber, String newApplicableTaxationPercent) {
+
+		Connection con = null;
+		
+		Statement stmt = null;
+			
+		stmt = ConnectionHandling.Connect();
+		
+	    ResultSet rs = null;
+	
+	String sql = "UPDATE FlightProject.dbo.UserData SET ApplicableTaxationPercent = '" + newApplicableTaxationPercent + "' WHERE FlightNumber = '" + flightNumber + "'"; 
+	
+	try {
+		
+			rs = stmt.executeQuery(sql);
+		  
+		    rs.close();
+		    
+		    return true;
+		      
+		   }catch(SQLException se){
+			   
+		      se.printStackTrace();
+		      
+		   }catch(Exception e){
+		     
+		      e.printStackTrace();
+		      
+		   }finally{
+	
+		      if(stmt!=null)
+				 
+			    ConnectionHandling.CloseConnection();
+		      
+		      if(con!=null)
+				 
+				 ConnectionHandling.CloseConnection();
+		      
+		   }
+	
+	return false;
+	
+	}
+
+public static boolean updateCapacity(String flightNumber, String newCapacity) {
+	
+		Connection con = null;
+		
+		Statement stmt = null;
+			
+		stmt = ConnectionHandling.Connect();
+		
+	    ResultSet rs = null;
+	
+	String sql = "UPDATE FlightProject.dbo.UserData SET Capacity = '" + newCapacity + "' WHERE FlightNumber = '" + flightNumber + "'"; 
+	
+	try {
+		
+			rs = stmt.executeQuery(sql);
+		  
+		    rs.close();
+		    
+		    return true;
+		      
+		   }catch(SQLException se){
+			   
+		      se.printStackTrace();
+		      
+		   }catch(Exception e){
+		     
+		      e.printStackTrace();
+		      
+		   }finally{
+	
+		      if(stmt!=null)
+				 
+			    ConnectionHandling.CloseConnection();
+		      
+		      if(con!=null)
+				 
+				 ConnectionHandling.CloseConnection();
+		      
+		   }
+	
+	return false;
+	
+	}
+
+public static boolean updatePlaneType(String flightNumber, String newPlaneType) {
+
+		Connection con = null;
+		
+		Statement stmt = null;
+			
+		stmt = ConnectionHandling.Connect();
+		
+	    ResultSet rs = null;
+	
+	String sql = "UPDATE FlightProject.dbo.UserData SET PlaneType = '" + newPlaneType + "' WHERE FlightNumber = '" + flightNumber + "'"; 
+	
+	try {
+		
+			rs = stmt.executeQuery(sql);
+		  
+		    rs.close();
+		    
+		    return true;
+		      
+		   }catch(SQLException se){
+			   
+		      se.printStackTrace();
+		      
+		   }catch(Exception e){
+		     
+		      e.printStackTrace();
+		      
+		   }finally{
+	
+		      if(stmt!=null)
+				 
+			    ConnectionHandling.CloseConnection();
+		      
+		      if(con!=null)
+				 
+				 ConnectionHandling.CloseConnection();
+		      
+		   }
+	
+	return false;
+	
+	}
+
+public static boolean updateBooked(String flightNumber, String newBooked) {
+	
+		Connection con = null;
+		
+		Statement stmt = null;
+			
+		stmt = ConnectionHandling.Connect();
+		
+	    ResultSet rs = null;
+	
+	String sql = "UPDATE FlightProject.dbo.UserData SET Booked = '" + newBooked + "' WHERE FlightNumber = '" + flightNumber + "'"; 
+	
+	try {
+		
+			rs = stmt.executeQuery(sql);
+		  
+		    rs.close();
+		    
+		    return true;
+		      
+		   }catch(SQLException se){
+			   
+		      se.printStackTrace();
+		      
+		   }catch(Exception e){
+		     
+		      e.printStackTrace();
+		      
+		   }finally{
+	
+		      if(stmt!=null)
+				 
+			    ConnectionHandling.CloseConnection();
+		      
+		      if(con!=null)
+				 
+				 ConnectionHandling.CloseConnection();
+		      
+		   }
+	
+	return false;
+	
+	}
+
+public static boolean updateEconomyCost(String flightNumber, String newCost) {
+
+		Connection con = null;
+		
+		Statement stmt = null;
+			
+		stmt = ConnectionHandling.Connect();
+		
+	    ResultSet rs = null;
+	
+	String sql = "UPDATE FlightProject.dbo.UserData SET Cost = '" + newCost + "' WHERE FlightNumber = '" + flightNumber + "'"; 
+	
+	try {
+		
+			rs = stmt.executeQuery(sql);
+		  
+		    rs.close();
+		    
+		    return true;
+		      
+		   }catch(SQLException se){
+			   
+		      se.printStackTrace();
+		      
+		   }catch(Exception e){
+		     
+		      e.printStackTrace();
+		      
+		   }finally{
+	
+		      if(stmt!=null)
+				 
+			    ConnectionHandling.CloseConnection();
+		      
+		      if(con!=null)
+				 
+				 ConnectionHandling.CloseConnection();
+		      
+		   }
+	
+	return false;
+	
+		}
 }
+
+

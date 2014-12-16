@@ -7,17 +7,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import com.microsoft.sqlserver.*;
-
 public class UserData {
 	
-public static String getPassword(String username){
+	
+	String SecurityQuestion = null;
+
+public static String getPassword(String id){
 		
 //public static void main(String[] args){
-	
-			String id = username;
 			
-			String Password = null;
+			String password = null;
 			
 			Connection con = null;
 		
@@ -27,7 +26,7 @@ public static String getPassword(String username){
 		
 	    ResultSet rs = null;
 	    
-	    String sql = "SELECT * FROM FlightProject.dbo.UserData WHERE ID = '" + id + "'"; 
+	    String sql = "SELECT Password FROM FlightProject.dbo.UserData WHERE ID = '" + id + "'"; 
 	    
 		try {
 			
@@ -35,7 +34,7 @@ public static String getPassword(String username){
 		  
 			  while(rs.next()){
 
-			         Password = rs.getString("Password");
+			         password = rs.getString("Password");
 
 //			         System.out.println("Password: " + Password);
 			      }
@@ -61,8 +60,8 @@ public static String getPassword(String username){
 					 ConnectionHandling.CloseConnection();
 			      
 			   }
-		System.out.println(Password);
-		return Password;
+
+		return password;
 					   
 			}
 
@@ -162,17 +161,109 @@ public static void register(String username, String password, int administrator,
 						   
 			}
 
-	public static String getSecurityQuestion(String ID){
+	public static String getSecurityQuestion(String id){
 		
+		String securityQuestion = null;
 		
-		return SecurityQuestion;
+		Connection con = null;
+	
+		Statement stmt = null;
+			
+	stmt = ConnectionHandling.Connect();
+	
+    ResultSet rs = null;
+    
+    String sql = "SELECT SecurityQuestion FROM FlightProject.dbo.UserData WHERE ID = '" + id + "'"; 
+    
+	try {
 		
+		rs = stmt.executeQuery(sql);
+	  
+		  while(rs.next()){
+
+		        securityQuestion = rs.getString("SecurityQuestion");
+		        		
+		         }
+
+ 		    rs.close();
+		    
+		 }catch(SQLException se){
+			   
+		    se.printStackTrace();
+		    
+		 }catch(Exception e){
+		   
+		    e.printStackTrace();
+		    
+		 }finally{
+		
+		    if(stmt!=null)
+				 
+			    ConnectionHandling.CloseConnection();
+		    
+		    if(con!=null)
+				 
+				 ConnectionHandling.CloseConnection();
+		    
+		 }	
+	
+		return securityQuestion;
 		
 	}
 
-	public static boolean checkAdmin(String username) {
-		// TODO Auto-generated method stub
-		return false;
+	public static boolean checkAdmin(String id) {
+		
+		Boolean administrator = null;
+		
+		Connection con = null;
+	
+		Statement stmt = null;
+			
+	stmt = ConnectionHandling.Connect();
+	
+    ResultSet rs = null;
+    
+    String sql = "SELECT Administrator FROM FlightProject.dbo.UserData WHERE ID = '" + id + "'"; 
+    
+	try {
+		
+		rs = stmt.executeQuery(sql);
+	  
+		  while(rs.next()){
+
+		         if(rs.getInt("Administrator") == 1){
+		        	 administrator = true;
+		         }
+		         
+		         if(rs.getInt("Administrator") == 0){
+		        	 administrator = false;
+		         }
+
+		      }
+		  
+		      rs.close();
+		      
+		   }catch(SQLException se){
+			   
+		      se.printStackTrace();
+		      
+		   }catch(Exception e){
+		     
+		      e.printStackTrace();
+		      
+		   }finally{
+
+		      if(stmt!=null)
+				 
+			    ConnectionHandling.CloseConnection();
+		      
+		      if(con!=null)
+				 
+				 ConnectionHandling.CloseConnection();
+		      
+		   }
+				   
+		return administrator;
 	}
 
 	public static boolean addShopFlights(String flightNumber) {
@@ -180,5 +271,149 @@ public static void register(String username, String password, int administrator,
 		// TODO Auto-generated method stub
 		
 	}
+
+	public static String getSecurityAnswer(String id) {
+
+		String securityAnswer = null;
+		
+		Connection con = null;
+	
+		Statement stmt = null;
+			
+	stmt = ConnectionHandling.Connect();
+	
+    ResultSet rs = null;
+    
+    String sql = "SELECT SeucrityAnswer FROM FlightProject.dbo.UserData WHERE ID = '" + id + "'"; 
+    
+	try {
+		
+		rs = stmt.executeQuery(sql);
+	  
+		  while(rs.next()){
+
+			  securityAnswer = rs.getString("SecurityAnswer");
+		        		
+		         }
+
+ 		    rs.close();
+		    
+		 }catch(SQLException se){
+			   
+		    se.printStackTrace();
+		    
+		 }catch(Exception e){
+		   
+		    e.printStackTrace();
+		    
+		 }finally{
+		
+		    if(stmt!=null)
+				 
+			    ConnectionHandling.CloseConnection();
+		    
+		    if(con!=null)
+				 
+				 ConnectionHandling.CloseConnection();
+		    
+		 }	
+	
+		return securityAnswer;
+
+	}
+
+	public static boolean convertToAdmin(String id) {
+
+		Boolean administrator = null;
+		
+		int adminValue = 1;
+		
+		Connection con = null;
+	
+		Statement stmt = null;
+			
+	stmt = ConnectionHandling.Connect();
+	
+    ResultSet rs = null;
+    
+    String sql = "UPDATE FlightProject.dbo.UserData SET Administrator = '" + adminValue + "' WHERE ID = '" + id + "'";
+    
+    try {
+    	
+		rs = stmt.executeQuery(sql);
+	  
+	    rs.close();
+	    
+	    return true;
+	      
+	   }catch(SQLException se){
+		   
+	      se.printStackTrace();
+	      
+	   }catch(Exception e){
+	     
+	      e.printStackTrace();
+	      
+	   }finally{
+
+	      if(stmt!=null)
+			 
+		    ConnectionHandling.CloseConnection();
+	      
+	      if(con!=null)
+			 
+			 ConnectionHandling.CloseConnection();
+	      
+	   }
+
+return false;
+
+	}
+
+	public static boolean clearCart(String id) {
+			
+		Connection con = null;
+	
+		Statement stmt = null;
+			
+	stmt = ConnectionHandling.Connect();
+	
+    ResultSet rs = null;
+    
+    String sql = "UPDATE FlightProject.dbo.UserData SET ShoppingFlight1 = 'NULL', ShoppingFlight2 = 'NULL', ShoppingFlight3 = 'NULL', ShoppingFlight4 = 'NULL', ShoppingFlight5 = 'NULL' WHERE ID = '" + id + "'"; 
+    
+    try {
+    	
+		rs = stmt.executeQuery(sql);
+	  
+	    rs.close();
+	    
+	    return true;
+	      
+	   }catch(SQLException se){
+		   
+	      se.printStackTrace();
+	      
+	   }catch(Exception e){
+	     
+	      e.printStackTrace();
+	      
+	   }finally{
+
+	      if(stmt!=null)
+			 
+		    ConnectionHandling.CloseConnection();
+	      
+	      if(con!=null)
+			 
+			 ConnectionHandling.CloseConnection();
+	      
+	   }
+
+return false;
+
+	}	
+	
+
 }
 

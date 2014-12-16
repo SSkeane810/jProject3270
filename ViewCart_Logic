@@ -2,11 +2,16 @@ package transactionBroker;
 
 import java.util.ArrayList;
 
-public class ViewCart_Logic {
+import databaseInterface.UserData;
 
-	public static String deleteCart(ArrayList<String> cart) {
+public class ViewCart_Logic {
+	
+	//Checkout? Bahavin navigates to payment page?
+	
+	//cart stored in ArrayList since there is not database table for it
+	public static String deleteCart(String username) {
 		
-		cart.clear();
+		UserData.clearCart(username);
 		
 		return "Cart deleted";
 	}

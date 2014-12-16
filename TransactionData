@@ -1,5 +1,10 @@
 package databaseInterface;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 public class TransactionData {
 
 	public static int getTransactionNumber() {
@@ -7,5 +12,64 @@ public class TransactionData {
 		return 0;
 	}
 
+	public static boolean addTransaction(int transactionNumber, int date,
+			String customerID, String flightNumber, String creditCardNumber,
+			int transactionAmount) {
+
+		Connection con = null;
+		
+		Statement stmt = null;
+			
+		stmt = ConnectionHandling.Connect();
+		
+	    ResultSet rs = null;
+
+    String sql = "INSERT INTO FlightProject.dbo.TransactionData VALUES (  "
+            +"'" +transactionNumber +"', "
+            +"'" +date +"', "
+            +"'" +customerID +"', "
+            +"'" +flightNumber +"', "
+            +"'" +creditCardNumber +"', "
+            +"'" +transactionAmount +"')";  
+    
+	try {
+		
+		rs = stmt.executeQuery(sql);
+	  
+		  while(rs.next()){
+		 		transactionNumber = rs.getInt("TransactionNumber");
+		 		date = rs.getInt("Date");
+	            customerID = rs.getString("CustomerID");
+	            flightNumber = rs.getString("FlightNumber");
+	            creditCardNumber = rs.getString("CreditCardNumber");
+	            transactionAmount = rs.getInt("TransactionAmount");
+		      }
+		  
+		      rs.close();
+		      
+		      return true;
+		      
+		   }catch(SQLException se){
+			   
+		      se.printStackTrace();
+		      
+		   }catch(Exception e){
+		     
+		      e.printStackTrace();
+		      
+		   }finally{
+
+		      if(stmt!=null)
+				 
+			    ConnectionHandling.CloseConnection();
+		      
+		      if(con!=null)
+				 
+				 ConnectionHandling.CloseConnection();
+		      
+		   }
+				   
+		return false;
+	}
 
 }

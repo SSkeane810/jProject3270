@@ -67,13 +67,13 @@ public static String getPassword(String id){
 
 public static void register(String username, String password, int administrator, String firstName,
 		String lastName, String address, String city, String state,
-		int zip, String email, String SSN,
+		int zip, String email, int SSN,
 		String securityQuestion, String securityAnswer, String ShoppingFlight1, 
 		String ShoppingFlight2, String ShoppingFlight3, String ShoppingFlight4, 
 		String ShoppingFlight5, String BookedFlight1, String BookedFlight2, 
 		String BookedFlight3, String BookedFlight4, String BookedFlight5){
 	
-	//public static void main(String[] args){
+//	public static void main(String[] args){
 
 				Connection con = null;
 			
@@ -95,6 +95,7 @@ public static void register(String username, String password, int administrator,
 		            +"'" +zip +"', "
 		            +"'" +email +"', "
 		            +"'" +SSN +"', "
+		            +"'" +securityQuestion +"', "
 		            +"'" +securityAnswer +"', "
 		            +"'" +ShoppingFlight1 +"', "
 		            +"'" +ShoppingFlight2 +"', "
@@ -122,7 +123,7 @@ public static void register(String username, String password, int administrator,
 						state = rs.getString("state");
 						zip = rs.getInt("zip");
 						email = rs.getString("email");
-						SSN = rs.getString("SSN");
+						SSN = rs.getInt("SSN");
 						securityQuestion = rs.getString("securityQuestion");
 						securityAnswer = rs.getString("securityAnswer");
 						ShoppingFlight1 = rs.getString("ShoppingFlight1");
@@ -414,6 +415,60 @@ return false;
 
 	}	
 	
+	public static String[] displayCart(String id) {
+		
+		Connection con = null;
+	
+		Statement stmt = null;
+			
+	stmt = ConnectionHandling.Connect();
+	
+    ResultSet rs = null;
+    
+    String sql = "SELECT ShoppingFlight1, ShoppingFlight2, ShoppingFlight3, ShoppingFlight4, ShoppingFlight5 FROM FlightProject.dbo.UserData WHERE ID = '" + id + "'"; 
 
+	String[] searchResults = new String[5];
+	        		
+    try {
+    	
+    	rs = stmt.executeQuery(sql);
+    	
+  	  while(rs.next()){
+  					searchResults[0] = rs.getString("ShoppingFlight1");
+  					searchResults[1] = rs.getString("ShoppingFlight2");
+  					searchResults[2] = rs.getString("ShoppingFlight3");
+  					searchResults[3] = rs.getString("ShoppingFlight4");
+  					searchResults[4] = rs.getString("ShoppingFlight5");
+
+	    rs.close();
+	    
+	    return searchResults;
+	    
+  	  	}
+	      
+	   }catch(SQLException se){
+		   
+	      se.printStackTrace();
+	      
+	   }catch(Exception e){
+	     
+	      e.printStackTrace();
+	      
+	   }finally{
+
+	      if(stmt!=null)
+			 
+		    ConnectionHandling.CloseConnection();
+	      
+	      if(con!=null)
+			 
+			 ConnectionHandling.CloseConnection();
+	      
+	   }
+
+return null;
+
+	}	
+	
 }
 

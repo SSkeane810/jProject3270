@@ -119,13 +119,14 @@ public class Flights {
 	public static boolean addFlight(String flightNumber,
 			String departureDateTime, String arrivalDateTime,
 			String layoverAirport, String layoverDuration,
-			String departureAirport, String departureCity,
-			String departureState, String departureCountry,
-			String destinationCode, String destinationAirport,
+			String departureAirportCode, String departureCity,
+			String departureState, 
+			String destinationAirportCode,
 			String destinationCity, String destinationState,
 			String destinationCountry, String applicableTaxationPercent,
-			String capacity, String planeType,
-			String booked, String cost) {
+			int capacity, String planeType,
+			int booked, String cost) {
+		
 		
 		Connection con = null;
 		
@@ -141,12 +142,10 @@ public class Flights {
             +"'" +arrivalDateTime +"', "
             +"'" +layoverAirport +"', "
             +"'" +layoverDuration +"', "
-            +"'" +departureAirport +"', "
+            +"'" +departureAirportCode +"', "
             +"'" +departureCity +"', "
             +"'" +departureState +"', "
-            +"'" +departureCountry +"', "
-            +"'" +destinationCode +"', "
-            +"'" +destinationAirport +"', "
+            +"'" +destinationAirportCode +"', "
             +"'" +destinationCity +"', "
             +"'" +destinationState +"', "
             +"'" +destinationCountry +"', "
@@ -166,19 +165,17 @@ public class Flights {
 			  arrivalDateTime  = rs.getString("ArrivalDateTime");
 			  layoverAirport  = rs.getString("LayoverAirport");
 			  layoverDuration  = rs.getString("LayoverDuration");
-			  departureAirport  = rs.getString("DepartureAirport");
+			  departureAirportCode  = rs.getString("DepartureAirportCode");
 			  departureCity  = rs.getString("DepartureCity");
 			  departureState  = rs.getString("DepartureState");
-			  departureCountry  = rs.getString("DepartureCountry");
-			  destinationCode = rs.getString("DestinationCode");
-			  destinationAirport  = rs.getString("DestinationAirport");
+			  destinationAirportCode  = rs.getString("DestinationAirportCode");
 			  destinationCity  = rs.getString("DestinationCity");
 			  destinationState  = rs.getString("DestinationState");
 			  destinationCountry  = rs.getString("DestinationCountry");
 			  applicableTaxationPercent  = rs.getString("ApplicableTaxationPercent");
-			  capacity  = rs.getString("Capacity");
+			  capacity  = rs.getInt("Capacity");
 			  planeType  = rs.getString("PlaneType");
-			  booked  = rs.getString("Booked");
+			  booked  = rs.getInt("Booked");
 			  cost  = rs.getString("Cost");
 		      }
 		  
